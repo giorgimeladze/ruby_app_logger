@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative '../../helpers/generators/hash_output_generator'
-require_relative '../../helpers/generators/sorted_hash_generator'
+require_relative '../../lib/generators/hash_output_generator'
+require_relative '../../lib/generators/sorted_hash_generator'
 require 'rspec/autorun'
 
 describe HashOutputGenerator, type: :helper do

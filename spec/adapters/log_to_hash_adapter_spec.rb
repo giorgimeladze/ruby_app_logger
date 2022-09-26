@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../../helpers/adapters/log_to_hash_adapter'
+require_relative '../../lib/adapters/log_to_hash_adapter'
 
 RSpec.describe LogToHashAdapter, type: :helper do
   describe '.convert_to_hash' do
