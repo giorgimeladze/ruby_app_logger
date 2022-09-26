@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../sorted_hash_generator'
+require_relative '../../helpers/generators/sorted_hash_generator'
 require 'rspec/autorun'
 
 describe SortedHashGenerator, type: :helper do
