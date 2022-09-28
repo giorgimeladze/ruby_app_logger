@@ -16,24 +16,6 @@ RSpec.describe LogToHashAdapter, type: :helper do
         response = described_class.new(file_name).convert_to_hash
         expect(response[:message]).to eq('Correct Log File Name not provided')
       end
-
-      it 'returns error message for more than two words in line' do
-        file_name = 'spec/log_files/webserver_two_word_error.log'
-        response = described_class.new(file_name).convert_to_hash
-        expect(response[:message]).to eq('Two words should be in each line')
-      end
-
-      it "returns error message for IPs' having words" do
-        file_name = 'spec/log_files/webserver_ip_word_error.log'
-        response = described_class.new(file_name).convert_to_hash
-        expect(response[:message]).to eq("in IP's place word are placed")
-      end
-
-      it "returns error message if IP doesn't have three dots" do
-        file_name = 'spec/log_files/webserver_not_correct_ip_error.log'
-        response = described_class.new(file_name).convert_to_hash
-        expect(response[:message]).to eq("in IP's place, three dots should be present for IP to be valid")
-      end
     end
 
     context 'returned hash' do

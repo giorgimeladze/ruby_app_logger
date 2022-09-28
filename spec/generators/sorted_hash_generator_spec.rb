@@ -12,12 +12,6 @@ describe SortedHashGenerator, type: :helper do
       }
     end
 
-    it 'prints output twice to printf' do
-      expect do
-        described_class.generate_visits(hash)
-      end.to output(include('/home', hash['/home'][:visits].size.to_s)).to_stdout
-    end
-
     it 'sorts hash in descending order' do
       new_hash = described_class.generate_visits(hash)
       array = hash.sort_by { |_key, value| -value[:visits].size }
@@ -31,12 +25,6 @@ describe SortedHashGenerator, type: :helper do
         '/about' => { uniq_visits: [1, 4, 6, 7] },
         '/home' => { uniq_visits: [1, 2, 3, 3, 4, 5, 6] }
       }
-    end
-
-    it 'prints output twice to printf' do
-      expect do
-        described_class.generate_uniq_visits(hash)
-      end.to output(include('/home', hash['/home'][:uniq_visits].size.to_s, '/about', 'unique')).to_stdout
     end
 
     it 'sorts hash in descending order' do

@@ -13,8 +13,8 @@ describe HashOutputGenerator, type: :helper do
 
     context 'without message key' do
       before(:each) do
-        allow(SortedHashGenerator).to receive(:generate_visits).and_return(true)
-        allow(SortedHashGenerator).to receive(:generate_uniq_visits).and_return(true)
+        allow(SortedHashGenerator).to receive(:generate_visits).and_return({ '/home' => { visits: ['1.1.1.1'] } })
+        allow(SortedHashGenerator).to receive(:generate_uniq_visits).and_return({ '/home' => { uniq_visits: ['1.1.1.1'] } })
       end
 
       it 'puts three outputs in stdout' do
@@ -23,6 +23,18 @@ describe HashOutputGenerator, type: :helper do
           HashOutputGenerator.new(hash).generate(SortedHashGenerator)
         end.to output(include('Output of most visits on a page', 'Output of the most uniq visits on  a page',
                               'Thanks for your time')).to_stdout
+      end
+
+      it 'prints visits output to printf' do
+        expect do
+          described_class.new({}).generate(SortedHashGenerator)
+        end.to output(include('/home', '1')).to_stdout
+      end
+
+      it 'prints uniq visits output to printf' do
+        expect do
+          described_class.new({}).generate(SortedHashGenerator)
+        end.to output(include('/home', '1', 'unique')).to_stdout
       end
     end
   end
