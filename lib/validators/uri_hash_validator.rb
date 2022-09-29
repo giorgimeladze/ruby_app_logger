@@ -7,7 +7,6 @@ require_relative '../errors/ip_contains_letter_error'
 require_relative '../errors/ip_dots_error'
 
 class UriHashValidator
-
   def validate_line_words(line_words)
     validate_words(line_words)
     validate_path(line_words[0])

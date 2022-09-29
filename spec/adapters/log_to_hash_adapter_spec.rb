@@ -4,20 +4,6 @@ require_relative '../../lib/adapters/log_to_hash_adapter'
 
 RSpec.describe LogToHashAdapter, type: :helper do
   describe '.convert_to_hash' do
-    context 'validations' do
-      it 'returns error message for not log file' do
-        file_name = 'webserver.txt'
-        response = described_class.new(file_name).convert_to_hash
-        expect(response[:message]).to eq('Log File was not provided')
-      end
-
-      it 'throws error message for file not found' do
-        file_name = 'webserverserverr.log'
-        response = described_class.new(file_name).convert_to_hash
-        expect(response[:message]).to eq('Correct Log File Name not provided')
-      end
-    end
-
     context 'returned hash' do
       subject { described_class.new('spec/log_files/webserver_test.log') }
 

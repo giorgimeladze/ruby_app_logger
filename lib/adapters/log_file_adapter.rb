@@ -1,27 +1,20 @@
 # frozen_string_literal: true
 
 require_relative '../validators/uri_hash_validator'
+require_relative '../services/log_file_processor'
+require_relative '../services/log_file_reader'
 
 class LogFileAdapter
-  attr_reader :file_name, :hash_validator
+  attr_reader :file_name, :file_processor, :file_reader
 
-  def initialize(file_name, hash_validator = UriHashValidator)
+  def initialize(file_name, hash_validator = UriHashValidator, file_processor = LogFileProcessor, file_reader = LogFileReader)
     @file_name = file_name
-    @hash_validator = hash_validator.new
+    @file_reader = file_reader.new(@file_name, hash_validator.new)
+    @file_processor = file_processor.new
   end
 
   def output_content
-    uri_path_visit_info = {}
-    File.readlines(file_name.to_s).each do |line|
-      line_words = line.split
-      hash_validator.validate_line_words(line_words)
-
-      unless uri_path_visit_info.key?(line_words[0])
-        uri_path_visit_info[line_words[0]] = { uniq_visits: Set.new, visits: [] }
-      end
-      uri_path_visit_info[line_words[0]][:uniq_visits] << line_words[1]
-      uri_path_visit_info[line_words[0]][:visits] << line_words[1]
-    end
-    uri_path_visit_info
+    read_file_output = file_reader.line_words_array
+    file_processor.convert_to_hash(read_file_output)
   end
 end
