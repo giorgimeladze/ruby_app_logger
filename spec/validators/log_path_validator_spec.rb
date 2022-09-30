@@ -4,7 +4,6 @@ require_relative '../../lib/validators/log_path_validator'
 
 RSpec.describe LogPathValidator, type: :helper do
   context 'validations' do
-
     it 'raises error if no slashes contained in path' do
       expect { subject.validate('home') }.to raise_error(PathSlashesError)
     end
