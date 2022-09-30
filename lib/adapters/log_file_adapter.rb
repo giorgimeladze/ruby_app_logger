@@ -1,15 +1,17 @@
 # frozen_string_literal: true
 
-require_relative '../validators/uri_hash_validator'
+require_relative '../validators/log_ip_validator'
+require_relative '../validators/log_path_validator'
+require_relative '../validators/log_words_validator'
 require_relative '../services/log_file_processor'
 require_relative '../services/log_file_reader'
 
 class LogFileAdapter
   attr_reader :file_name, :file_processor, :file_reader
 
-  def initialize(file_name, hash_validator = UriHashValidator, file_processor = LogFileProcessor, file_reader = LogFileReader)
+  def initialize(file_name, ip_validator = LogIpValidator, path_validator = LogPathValidator, words_validator = LogWordsValidator, file_processor = LogFileProcessor, file_reader = LogFileReader)
     @file_name = file_name
-    @file_reader = file_reader.new(@file_name, hash_validator.new)
+    @file_reader = file_reader.new(@file_name, ip_validator.new, path_validator.new, words_validator.new)
     @file_processor = file_processor.new
   end
 

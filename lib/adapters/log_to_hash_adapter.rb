@@ -1,21 +1,23 @@
 # frozen_string_literal: true
 
 require 'set'
-require_relative '../validators/log_file_validator'
+require_relative '../validators/log_file_name_validator'
+require_relative '../validators/log_file_existence_validator'
 require_relative 'log_file_adapter'
 
 class LogToHashAdapter
-  attr_reader :file_name, :log_file_validator, :file_adapter
+  attr_reader :file_name, :name_validator, :file_existence_validator, :file_adapter
 
-  def initialize(file_name, log_file_validator = LogFileValidator, file_adapter = LogFileAdapter)
+  def initialize(file_name, name_validator = LogFileNameValidator, file_existence_validator = LogFileExistenceValidator, file_adapter = LogFileAdapter)
     @file_name = file_name
-    @log_file_validator = log_file_validator.new
+    @name_validator = name_validator.new
+    @file_existence_validator = file_existence_validator.new
     @file_adapter = file_adapter.new(file_name)
   end
 
   def convert_to_hash
-    log_file_validator.validate_file_name(file_name)
-    log_file_validator.validate_file_existance(file_name)
+    name_validator.validate(file_name)
+    file_existence_validator.validate(file_name)
 
     file_adapter.output_content
   rescue StandardError => e

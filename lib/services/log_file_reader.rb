@@ -1,18 +1,22 @@
 # frozen_string_literal: true
 
 class LogFileReader
-  attr_reader :file_name, :hash_validator
+  attr_reader :file_name, :ip_validator, :path_validator, :words_validator
 
-  def initialize(file_name, hash_validator)
+  def initialize(file_name, ip_validator, path_validator, words_validator)
     @file_name = file_name
-    @hash_validator = hash_validator
+    @ip_validator = ip_validator
+    @path_validator = path_validator
+    @words_validator = words_validator
   end
 
   def line_words_array
     log_file_words_array = []
     File.open(file_name, 'r').each_line do |line|
       line_words = line.strip.split
-      hash_validator.validate_line_words(line_words)
+      words_validator.validate(line_words)
+      path_validator.validate(line_words.first)
+      ip_validator.validate(line_words.last)
 
       log_file_words_array << line_words
     end

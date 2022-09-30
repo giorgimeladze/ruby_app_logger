@@ -1,16 +1,20 @@
 # frozen_string_literal: true
 
 require_relative '../../lib/services/log_file_reader'
-require_relative '../../lib/validators/uri_hash_validator'
+require_relative '../../lib/validators/log_ip_validator'
+require_relative '../../lib/validators/log_path_validator'
+require_relative '../../lib/validators/log_words_validator'
 require 'rspec/autorun'
 
 describe LogFileReader, type: :helper do
   describe '.line_words_array' do
     let!(:file_name) { 'spec/log_files/webserver_test.log' }
     before(:each) do
-      allow_any_instance_of(UriHashValidator).to receive(:validate_line_words).and_return(true)
+      allow_any_instance_of(LogIpValidator).to receive(:validate).and_return(true)
+      allow_any_instance_of(LogPathValidator).to receive(:validate).and_return(true)
+      allow_any_instance_of(LogWordsValidator).to receive(:validate).and_return(true)
     end
-    subject { described_class.new(file_name, UriHashValidator.new) }
+    subject { described_class.new(file_name, LogIpValidator.new, LogPathValidator.new, LogWordsValidator.new) }
 
     it 'returns an array' do
       response = subject.line_words_array
